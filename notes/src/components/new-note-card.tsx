@@ -1,7 +1,44 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { toast } from "sonner"
 
 export function NewNoteCard() {
+  const [shouldShowOnBoard, setShouldShowOnBoard] = useState(true)
+  const [content, setContent] = useState('')
+
+  // Start the editor
+  function handleStartEditor() {
+    setShouldShowOnBoard(false)
+  }
+
+  // Return the value of the textarea
+  function handContentChanged(events : ChangeEvent<HTMLTextAreaElement>) {
+    setContent(events.target.value)
+
+    if (events.target.value === '') {
+      setShouldShowOnBoard(true)
+    }
+  }
+
+  // Save the notes
+  function handleSaveNote(event: FormEvent) {
+    event.preventDefault()
+
+    toast.promise(
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve('Note saved')
+        }, 2000)
+      }),
+      {
+        loading: 'Saving note...',
+        success: 'Note saved',
+        error: 'Failed to save note'
+      }
+    )
+  }
+
   return (
     <Dialog.Root>
 
@@ -17,6 +54,7 @@ export function NewNoteCard() {
 
       {/* Card Modal */}
       <Dialog.Portal>
+
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
 
         <Dialog.Content className="fixed overflow-hidden left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[640px] w-full h-[60vh] bg-slate-700 rounded-md flex flex-col outline-none">
@@ -24,23 +62,33 @@ export function NewNoteCard() {
             <X size={24} />
           </Dialog.Close>
 
-          <div className="flex flex-1 flex-col gap-3 p-5">
-            <span className="text-xm font-medium text-slate-200">
-              Add a new note
-            </span>
+          <form onSubmit={handleSaveNote} className="flex-1 flex flex-col">
+            <div className="flex flex-1 flex-col gap-3 p-5">
+              <span className="text-xm font-medium text-slate-200">
+                Add a new note
+              </span>
 
-            <p className="text-sm leading-6 text-slate-400">
-              Staring a new note is easy. Just click{" "}
-              <button className="text-lime-500">HERE</button> to get started.
-            </p>
-          </div>
+              {shouldShowOnBoard ? (
+                <p className="text-sm leading-6 text-slate-400">
+                  Staring a new note with <button onClick={handleStartEditor} className="text-lime-500"> AUDIO </button> or a note with <button onClick={handleStartEditor} className="text-lime-500">TEXT</button>.
+                </p>
+              ) : (
+                <textarea
+                  autoFocus
+                  className="text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none"
+                  placeholder="Start typing..."
+                  onChange={handContentChanged} />
+              )}
+            </div>
 
-          <button
-            type="button"
-            className="bg-lime-500 hover:bg-lime-300 p-3 w-full text-sm text-slate-800 font-medium outline-none"
-          >
-            <span className="text-lime-950">Save note</span>
-          </button>
+            <button
+              type="submit"
+              className="bg-lime-500 hover:bg-lime-300 p-3 w-full text-sm text-slate-800 font-medium outline-none"
+              >
+              <span 
+                className="text-lime-950">Save note</span>
+            </button>
+          </form>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

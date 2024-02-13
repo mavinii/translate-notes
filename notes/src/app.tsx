@@ -29,7 +29,7 @@ export function App() {
           {
             id: 'string',
             date: new Date(),
-            content: 'string'
+            content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero beatae in ullam expedita iste, inventore quia. Expedita porro quaerat earum quae sint corrupti, dolore quam nisi quia error consequatur rem!'
           } 
         } />
 
