@@ -25,11 +25,13 @@ export function App() {
       <div className="grid grid-cols-3 auto-rows-[250px] gap-5">
 
         <NewNoteCard />
-        <NoteCard note={ {
-          id: 'string',
-          date: new Date(),
-          content: 'string'
-        } } />
+        <NoteCard note={ 
+          {
+            id: 'string',
+            date: new Date(),
+            content: 'string'
+          } 
+        } />
 
       </div>
     </div>
