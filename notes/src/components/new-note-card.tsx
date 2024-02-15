@@ -56,9 +56,8 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
       <Dialog.Trigger className="rounded-md text-left flex flex-col bg-slate-600 p-4 gap-2 outline-none hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
         <span className="text-sm font-medium text-slate-200">Example 1</span>
         <p className="text-sm leading-6 text-slate-400">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero beatae
-          in ullam expedita iste, inventore quia. Expedita porro quaerat earum
-          quae sint corrupti, dolore quam nisi quia error consequatur rem!
+          This is an example of a new note card created with audio or text.
+          Click here to start a new note...
         </p>
       </Dialog.Trigger>
 
@@ -81,24 +80,25 @@ export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
               {shouldShowOnBoard ? (
                 <p className="text-sm leading-6 text-slate-400">
                   Staring a new note with <button onClick={handleStartEditor} className="text-lime-500"> AUDIO </button> or a note with <button onClick={handleStartEditor} className="text-lime-500">TEXT</button>.
-                </p>
+                </p>              
               ) : (
-                <textarea
-                  autoFocus
-                  className="text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none"
-                  placeholder="Start typing..."
-                  onChange={handContentChanged}
-                  value={content} />
+                <>
+                  <textarea
+                    autoFocus
+                    className="text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none"
+                    placeholder="Start typing..."
+                    onChange={handContentChanged}
+                    value={content}
+                  />
+                  <button
+                    type="submit"
+                    className="bg-lime-500 hover:bg-lime-300 p-3 w-full text-sm text-slate-800 font-medium outline-none"
+                    >
+                    <span className="text-lime-950">Save note</span>
+                  </button>
+                </>
               )}
             </div>
-
-            <button
-              type="submit"
-              className="bg-lime-500 hover:bg-lime-300 p-3 w-full text-sm text-slate-800 font-medium outline-none"
-              >
-              <span 
-                className="text-lime-950">Save note</span>
-            </button>
           </form>
         </Dialog.Content>
       </Dialog.Portal>
