@@ -1,8 +1,39 @@
+import { useState } from "react";
 import logo from "./assets/logo-nlw-experts.svg";
 import { NewNoteCard } from "./components/new-note-card";
 import { NoteCard } from "./components/note-card";
 
+interface Note {
+  id: string;
+  date: Date;
+  content: string;
+}
+
 export function App() {
+  const [notes, setNotes] = useState<Note[]>(() => {
+    const notesOnStorage = localStorage.getItem('notes')
+
+    if (notesOnStorage) {
+      return JSON.parse(notesOnStorage)
+    }
+
+    return []
+  })
+
+  // Create a new note and saving locally
+  function onNoteCreated(content: string) {
+    const newNote = {
+      id: crypto.randomUUID(),
+      date: new Date(),
+      content,
+    }
+
+    const  notesArray = [newNote, ...notes]
+    setNotes(notesArray)
+
+    localStorage.setItem('notes', JSON.stringify(notesArray))
+  }
+
   return (
     <div className="mx-auto max-w-6xl my-12 space-y-6">
       
@@ -24,14 +55,11 @@ export function App() {
       {/* Notes */}
       <div className="grid grid-cols-3 auto-rows-[250px] gap-5">
 
-        <NewNoteCard />
-        <NoteCard note={ 
-          {
-            id: 'string',
-            date: new Date(),
-            content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero beatae in ullam expedita iste, inventore quia. Expedita porro quaerat earum quae sint corrupti, dolore quam nisi quia error consequatur rem!'
-          } 
-        } />
+        <NewNoteCard onNoteCreated={onNoteCreated} />
+
+        {notes.map(note => {
+          return <NoteCard key={note.id} note={note} />
+        })}
 
       </div>
     </div>
